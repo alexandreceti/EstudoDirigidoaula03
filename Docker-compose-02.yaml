@@ -1,0 +1,16 @@
+version: "3"
+services:
+  proxy:
+    image: httpd
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+  app:
+    image: node:8
+    deploy:
+      replicas: 3
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
