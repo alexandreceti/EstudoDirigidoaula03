@@ -1,0 +1,30 @@
+version: "3"
+services:
+  haproxy:
+    image: haproxy
+    deploy:
+      replicas: 2
+    depends_on:
+      - iis
+  webtier:
+    image: microsoft/iis
+    deploy:
+      replicas: 3
+    depends_on:
+      - db
+      - redis
+      - search
+  servicetier:
+    image: microsoft/iis
+    depends_on:
+      - db
+  search:
+    image: elasticsearch
+  redis:
+    image: redis:alpine
+  db:
+    image: microsoft/mssql-server-linux
+    environment: 
+        SA_PASSWORD: "ArquiteturaEmNuvem10"
+        ACCEPT_EULA: "Y"
+        MSSQL_PID: "Express"
